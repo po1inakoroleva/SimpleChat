@@ -4,11 +4,11 @@ import {
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import LoginPage from './Components/LoginPage';
-import ErrorPage from './Components/ErrorPage';
-import MainPage from './Components/MainPage';
-import AuthProvider from './providers/AuthProvider';
-import { useAuth } from './contexts/index';
+import LoginPage from './LoginPage';
+import ErrorPage from './ErrorPage';
+import MainPage from './MainPage/MainPage';
+import AuthProvider from '../providers/AuthProvider';
+import { useAuth } from '../contexts/index';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
