@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { actions as loadingStatusActions } from './loadingStatusSlice.js';
 import fetchInitalData from './thunk';
 
-/* eslint-disable */
 const channelsAdapter = createEntityAdapter();
 const initialState = channelsAdapter.getInitialState({
   currentChannelId: null,
@@ -18,10 +19,12 @@ const channelsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchInitalData.fulfilled, (state, { payload }) => {
-      channelsAdapter.setAll(state, payload.channels);
-      state.currentChannelId = payload.currentChannelId;
-    });
+    builder
+      .addCase(fetchInitalData.fulfilled, (state, { payload }) => {
+        channelsAdapter.setAll(state, payload.channels);
+        state.currentChannelId = payload.currentChannelId;
+      })
+      .addCase(loadingStatusActions.unload, () => initialState);
   },
 });
 
@@ -34,5 +37,7 @@ const customSelectors = {
   },
 };
 
-export { customSelectors as selectors };
+const { actions } = channelsSlice;
+
+export { actions, customSelectors as channelsSelectors };
 export default channelsSlice.reducer;

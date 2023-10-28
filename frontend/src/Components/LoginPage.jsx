@@ -1,8 +1,7 @@
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
@@ -11,8 +10,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
-import routes from '../routes';
-import { useAuth } from '../contexts/index';
+import { useAuth } from '../providers/AuthProvider';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Обязательное поле'),
@@ -22,12 +20,6 @@ const validationSchema = Yup.object().shape({
 const LoginPage = () => {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
-  const location = useLocation();
-  const navigate = useNavigate();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -36,22 +28,13 @@ const LoginPage = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setAuthFailed(false);
-
       try {
-        const res = await axios.post(routes.login(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        const { from } = location.state;
-        navigate(from);
-      } catch (err) {
+        await auth.logIn(values);
+      } catch (error) {
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
+        if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
-          inputRef.current.select();
-          return;
         }
-        throw err;
       }
     },
   });
@@ -79,7 +62,6 @@ const LoginPage = () => {
                     required
                     autoFocus
                     disabled={formik.isSubmitting}
-                    ref={inputRef}
                   />
                 </FloatingLabel>
                 <FloatingLabel controlId="password" label="Пароль" className="mb-3">

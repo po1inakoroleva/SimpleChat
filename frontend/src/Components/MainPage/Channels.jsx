@@ -1,25 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectors } from '../../slices/channelsSlice';
-import fetchInitialData from '../../slices/thunk';
 
-const Channels = () => {
-  const dispatch = useDispatch();
-  const channels = useSelector(selectors.selectAllChannels);
-  const currentChannel = useSelector(selectors.selectCurrentChannel);
-
-  useEffect(() => {
-    dispatch(fetchInitialData());
-  }, []);
-
+const Channels = ({ channels, currentChannel }) => {
   const isCurrentChannel = (currentId) => {
     const { id } = currentChannel;
-    if (currentId === id) {
-      return 'primary';
-    }
-    return 'light';
+    return currentId === id;
   };
 
   return (
@@ -44,7 +30,7 @@ const Channels = () => {
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map(({ name, id }) => (
           <li key={id} className="nav-item w-100">
-            <Button variant={isCurrentChannel(id)} className="w-100 rounded-0 text-start">
+            <Button variant={isCurrentChannel(id) ? 'primary' : 'ligth'} className="w-100 rounded-0 text-start">
               <span className="me-1">#</span>
               {name}
             </Button>
