@@ -23,6 +23,13 @@ const AuthProvider = ({ children }) => {
       setUser(data);
     };
 
+    const signUp = async (username, password) => {
+      const response = await axios.post(routes.signup(), { username, password });
+      const { data } = response;
+      localStorage.setItem('user', JSON.stringify(data));
+      setUser(data);
+    };
+
     const logOut = () => {
       localStorage.removeItem('user');
       dispatch(loadingStatusActions.unload());
@@ -36,7 +43,7 @@ const AuthProvider = ({ children }) => {
     const loggedIn = !!user;
 
     return ({
-      logIn, logOut, loggedIn, getUserName, getAuthHeader,
+      logIn, logOut, signUp, loggedIn, getUserName, getAuthHeader,
     });
   }, [dispatch, user]);
 

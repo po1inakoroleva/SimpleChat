@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +13,7 @@ import { channelsSelectors } from '../../slices/channelsSlice';
 import { useServer } from '../../providers/ServerProvider';
 
 const Add = ({ handleClose }) => {
+  const { t } = useTranslation();
   const channels = useSelector(channelsSelectors.selectAllChannelsNames);
   const { addChannel } = useServer();
 
@@ -24,10 +26,10 @@ const Add = ({ handleClose }) => {
     name: Yup
       .string()
       .trim()
-      .required()
-      .notOneOf(channels)
-      .min(3)
-      .max(20),
+      .required(t('validation.required'))
+      .notOneOf(channels, t('validation.channelAlreadyExists'))
+      .min(3, t('validation.min3'))
+      .max(20, t('validation.max20')),
   });
 
   const formik = useFormik({
@@ -40,9 +42,9 @@ const Add = ({ handleClose }) => {
         await addChannel(name);
         formik.resetForm();
         handleClose();
-        toast('Канал создан');
+        toast(t('modals.add.toast'));
       } catch (error) {
-        toast.error('Ошибка соединения');
+        toast.error(t('errors.errorConection'));
       } finally {
         inputRef.current.focus();
       }
@@ -52,7 +54,7 @@ const Add = ({ handleClose }) => {
   return (
     <>
       <Modal.Header closeButton onHide={handleClose}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.add.title')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -68,7 +70,7 @@ const Add = ({ handleClose }) => {
               className="mb-2"
             />
             <Form.Label className="visually-hidden">
-              Имя канала
+              {t('modals.add.name')}
             </Form.Label>
             <div className="invalid-feedback" />
             <div className="d-flex justify-content-end">
@@ -78,14 +80,14 @@ const Add = ({ handleClose }) => {
                 onClick={handleClose}
                 className="me-2"
               >
-                Отменить
+                {t('buttons.cancelBtn')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={formik.isSubmitting}
               >
-                Отправить
+                {t('modals.add.submitBtn')}
               </Button>
             </div>
           </Form.Group>

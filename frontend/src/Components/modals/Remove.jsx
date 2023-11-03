@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -8,6 +9,7 @@ import { useServer } from '../../providers/ServerProvider';
 import { selectors as modalSelectors } from '../../slices/modalSlice';
 
 const Remove = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { removeChannel } = useServer();
   const { channelId } = useSelector(modalSelectors.getModalContext);
 
@@ -15,19 +17,19 @@ const Remove = ({ handleClose }) => {
     try {
       await removeChannel(channelId);
       handleClose();
-      toast('Канал удален');
+      toast(t('modals.remove.toast'));
     } catch (error) {
-      toast.error('Ошибка соединения');
+      toast.error(t('errors.errorConection'));
     }
   };
 
   return (
     <>
       <Modal.Header closeButton onHide={handleClose}>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('modals.remove.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.remove.body')}</p>
         <div className="d-flex justify-content-end">
           <Button
             type="button"
@@ -35,14 +37,14 @@ const Remove = ({ handleClose }) => {
             onClick={handleClose}
             className="me-2"
           >
-            Отменить
+            {t('buttons.cancelBtn')}
           </Button>
           <Button
             type="submit"
             variant="danger"
             onClick={handleRemove}
           >
-            Удалить
+            {t('modals.remove.submitBtn')}
           </Button>
         </div>
       </Modal.Body>

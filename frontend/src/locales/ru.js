@@ -5,9 +5,16 @@ export default {
       username: 'Ваш ник',
       password: 'Пароль',
       submitBtn: 'Войти',
-      noAccount: 'Нет аккаута?',
+      noAccount: 'Нет аккаунта?',
       signUp: 'Регистрация',
       authFailed: 'Неверные имя пользователя или пароль',
+    },
+    signUpPage: {
+      title: 'Регистрация',
+      username: 'Ваш ник',
+      password: 'Пароль',
+      passwordConfirmation: 'Подтвердите пароль',
+      submitBtn: 'Зарегистрироваться',
     },
     messages: {
       counter: {
@@ -25,11 +32,14 @@ export default {
       title: 'Каналы',
       channelSign: '#',
       control: 'Управление каналом',
-      delete: 'Удалить',
+      remove: 'Удалить',
       rename: 'Переименовать',
     },
     errors: {
       smthWentWrong: 'Что-то пошло не так',
+      error409: 'Пользователь уже существует',
+      error401: 'Ошибка аутентификации',
+      errorConection: 'Ошибка соединения',
     },
     loadingStatus: 'Загрузка...',
     errorPage: {
@@ -40,6 +50,36 @@ export default {
     buttons: {
       reloadBtn: 'Перезагрузить страницу',
       signOut: 'Выйти',
+      cancelBtn: 'Отменить',
+    },
+    validation: {
+      min3: 'Более 3 символов',
+      min6: 'Более 6 символов',
+      max20: 'Менее 20 символов',
+      required: 'Обязательное поле',
+      correctSymbols: 'Только латинские буквы и цифры',
+      passwordConfirmation: 'Пароли должны совпадать',
+      channelAlreadyExists: 'Канал уже существует',
+    },
+    modals: {
+      add: {
+        title: 'Добавить канал',
+        name: 'Имя канала',
+        submitBtn: 'Отправить',
+        toast: 'Канал добавлен',
+      },
+      remove: {
+        title: 'Удалить канал',
+        body: 'Уверены?',
+        submitBtn: 'Удалить',
+        toast: 'Канал удален',
+      },
+      rename: {
+        title: 'Переименовать канал',
+        name: 'Имя канала',
+        submitBtn: 'Отправить',
+        toast: 'Канал переименован',
+      },
     },
   },
 };

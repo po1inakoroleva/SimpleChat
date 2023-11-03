@@ -40,7 +40,7 @@ const RemovableChannel = ({
         <span className="visually-hidden">{t('channels.control')}</span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item onClick={handleRemove(Number(id))}>{t('channels.delete')}</Dropdown.Item>
+        <Dropdown.Item onClick={handleRemove(Number(id))}>{t('channels.remove')}</Dropdown.Item>
         <Dropdown.Item onClick={handleRename(Number(id), name)}>{t('channels.rename')}</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -13,6 +14,7 @@ import * as ChannelsSlice from '../../slices/channelsSlice';
 import { selectors as modalSelectors } from '../../slices/modalSlice';
 
 const Rename = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { renameChannel } = useServer();
   const channels = useSelector(ChannelsSlice.channelsSelectors.selectAllChannelsNames);
   const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
@@ -26,10 +28,10 @@ const Rename = ({ handleClose }) => {
     name: Yup
       .string()
       .trim()
-      .required()
-      .notOneOf(channels)
-      .min(3)
-      .max(20),
+      .required(t('validation.required'))
+      .notOneOf(channels, t('validation.channelAlreadyExists'))
+      .min(3, t('validation.min3'))
+      .max(20, t('validation.max20')),
   });
 
   const formik = useFormik({
@@ -41,9 +43,9 @@ const Rename = ({ handleClose }) => {
       try {
         await renameChannel(channelId, name);
         handleClose();
-        toast('Канал переименован');
+        toast(t('modals.rename.toast'));
       } catch (error) {
-        toast.error('Ошибка соединения');
+        toast.error(t('errors.errorConection'));
       } finally {
         inputRef.current.focus();
       }
@@ -53,7 +55,7 @@ const Rename = ({ handleClose }) => {
   return (
     <>
       <Modal.Header closeButton onHide={handleClose}>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename.title')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -69,7 +71,7 @@ const Rename = ({ handleClose }) => {
               className="mb-2"
             />
             <Form.Label className="visually-hidden">
-              Имя канала
+              {t('modals.rename.name')}
             </Form.Label>
             <div className="invalid-feedback" />
             <div className="d-flex justify-content-end">
@@ -79,14 +81,14 @@ const Rename = ({ handleClose }) => {
                 onClick={handleClose}
                 className="me-2"
               >
-                Отменить
+                {t('buttons.cancelBtn')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={formik.isSubmitting}
               >
-                Отправить
+                {t('modals.rename.submitBtn')}
               </Button>
             </div>
           </Form.Group>

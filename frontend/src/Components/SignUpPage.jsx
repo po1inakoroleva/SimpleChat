@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,33 +12,42 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 import { useAuth } from '../providers/AuthProvider';
 
-const LoginPage = () => {
-  const auth = useAuth();
+const SignUpPage = () => {
+  const { signUp } = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required(t('validation.required')),
-    password: Yup.string().required(t('validation.required')),
+    username: Yup.string()
+      .required(t('validation.required'))
+      .min(3, t('validation.min3'))
+      .max(20, t('validation.max20')),
+    password: Yup.string()
+      .required(t('validation.required'))
+      .min(6, t('validation.min6'))
+      .matches(/[a-zA-Z0-9]/, t('validation.correctSymbols')),
+    passwordConfirmation: Yup.string().required('Обязательное поле')
+      .oneOf([Yup.ref('password'), null], t('validation.passwordConfirmation')),
   });
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
+      passwordConfirmation: '',
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async ({ username, password }) => {
       try {
-        await auth.logIn(values);
+        await signUp(username, password);
       } catch (error) {
         formik.setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 401) {
+        if (error.isAxiosError && error.response.status === 409) {
           setAuthFailed(true);
-          toast.error(t('errors.error401'));
           return;
         }
         toast.error(t('errors.errorConection'));
@@ -55,37 +63,54 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <Image src={`${process.env.PUBLIC_URL}/images/login.jpg`} roundedCircle />
+                <Image src={`${process.env.PUBLIC_URL}/images/signup.jpg`} roundedCircle />
               </Col>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-12 col-md-6">
-                <h1 className="text-center mb-4">{t('logInPage.title')}</h1>
-                <FloatingLabel controlId="username" label={t('logInPage.username')} className="mb-3">
+                <h1 className="text-center mb-4">{t('signUpPage.title')}</h1>
+                <FloatingLabel controlId="username" label={t('signUpPage.username')} className="mb-3">
                   <Form.Control
                     type="text"
                     value={formik.values.username}
                     placeholder="username"
                     name="username"
-                    isInvalid={authFailed}
+                    isInvalid={!!formik.errors.username && formik.errors.username}
                     onChange={formik.handleChange}
                     required
                     autoFocus
                     disabled={formik.isSubmitting}
                   />
+                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.username)}</Form.Control.Feedback>
                 </FloatingLabel>
-                <FloatingLabel controlId="password" label={t('logInPage.password')} className="mb-3">
+                <FloatingLabel controlId="password" label={t('signUpPage.password')} className="mb-3">
                   <Form.Control
                     type="password"
                     value={formik.values.password}
                     placeholder="password"
                     name="password"
-                    isInvalid={authFailed}
+                    isInvalid={!!formik.errors.password && formik.touched.password}
                     onChange={formik.handleChange}
                     required
                     disabled={formik.isSubmitting}
                     ref={target}
                   />
-                  {authFailed ? <div className="invalid-tooltip">{t('logInPage.authFailed')}</div> : null}
+                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.password)}</Form.Control.Feedback>
                 </FloatingLabel>
+                <FloatingLabel controlId="passwordConfirmation" label={t('signUpPage.passwordConfirmation')} className="mb-3">
+                  <Form.Control
+                    type="passwordConfirmation"
+                    value={formik.values.passwordConfirmation}
+                    placeholder="passwordConfirmation"
+                    name="passwordConfirmation"
+                    isInvalid={!!formik.errors.passwordConfirmation
+                      && formik.touched.passwordConfirmation}
+                    onChange={formik.handleChange}
+                    required
+                    disabled={formik.isSubmitting}
+                    ref={target}
+                  />
+                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.passwordConfirmation)}</Form.Control.Feedback>
+                </FloatingLabel>
+                {authFailed ? <Alert variant="danger">{t('errors.error401')}</Alert> : null}
                 <Button
                   variant="outline-primary"
                   type="submit"
@@ -93,17 +118,10 @@ const LoginPage = () => {
                   className="mb-3 w-100"
                   disabled={formik.isSubmitting}
                 >
-                  {t('logInPage.submitBtn')}
+                  {t('signUpPage.submitBtn')}
                 </Button>
               </Form>
             </Card.Body>
-            <Card.Footer className="p-4">
-              <div className="text-muted text-center">
-                <span>{t('logInPage.noAccount')}</span>
-                {' '}
-                <Link to="/signup">{t('logInPage.signUp')}</Link>
-              </div>
-            </Card.Footer>
           </Card>
         </Col>
       </Row>
@@ -111,4 +129,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

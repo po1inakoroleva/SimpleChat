@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import LoginPage from './LoginPage';
 import ErrorPage from './ErrorPage';
+import SignUpPage from './SignUpPage';
 import MainPage from './MainPage/MainPage';
 import AuthProvider, { useAuth } from '../providers/AuthProvider';
 import ServerProvider from '../providers/ServerProvider';
@@ -55,6 +56,9 @@ const App = () => (
             </Route>
             <Route path={routes.loginPage()} element={<PublicOutlet />}>
               <Route path="" element={<LoginPage />} />
+            </Route>
+            <Route path={routes.signUpPage()} element={<PublicOutlet />}>
+              <Route path="" element={<SignUpPage />} />
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
