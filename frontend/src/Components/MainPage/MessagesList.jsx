@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { uniqueId } from 'lodash';
 import { useAuth } from '../../providers/AuthProvider';
 
 const scrollToMarker = (marker, behavior = 'auto') => {
@@ -51,6 +52,7 @@ const MessagesList = ({ messages, channelId }) => {
 
         return (
           <Message
+            key={uniqueId()}
             author={username}
             body={body}
             color={color}

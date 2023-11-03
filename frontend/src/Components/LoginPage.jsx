@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
@@ -18,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
 
@@ -50,8 +52,8 @@ const LoginPage = () => {
                 <Image src={`${process.env.PUBLIC_URL}/images/login.jpg`} roundedCircle />
               </Col>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-12 col-md-6">
-                <h1 className="text-center mb-4">Войти</h1>
-                <FloatingLabel controlId="username" label="Ваш ник" className="mb-3">
+                <h1 className="text-center mb-4">{t('logInPage.title')}</h1>
+                <FloatingLabel controlId="username" label={t('logInPage.username')} className="mb-3">
                   <Form.Control
                     type="text"
                     value={formik.values.username}
@@ -64,7 +66,7 @@ const LoginPage = () => {
                     disabled={formik.isSubmitting}
                   />
                 </FloatingLabel>
-                <FloatingLabel controlId="password" label="Пароль" className="mb-3">
+                <FloatingLabel controlId="password" label={t('logInPage.password')} className="mb-3">
                   <Form.Control
                     type="password"
                     value={formik.values.password}
@@ -76,7 +78,7 @@ const LoginPage = () => {
                     disabled={formik.isSubmitting}
                     ref={target}
                   />
-                  {authFailed ? <div className="invalid-tooltip">Неверные имя пользователя или пароль</div> : null}
+                  {authFailed ? <div className="invalid-tooltip">{t('logInPage.authFailed')}</div> : null}
                 </FloatingLabel>
                 <Button
                   variant="outline-primary"
@@ -85,15 +87,15 @@ const LoginPage = () => {
                   className="mb-3 w-100"
                   disabled={formik.isSubmitting}
                 >
-                  Войти
+                  {t('logInPage.submitBtn')}
                 </Button>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-muted text-center">
-                <span>Нет аккаунта?</span>
+                <span>{t('logInPage.noAccount')}</span>
                 {' '}
-                <Link to="/signup">Регистрация</Link>
+                <Link to="/signup">{t('logInPage.signUp')}</Link>
               </div>
             </Card.Footer>
           </Card>

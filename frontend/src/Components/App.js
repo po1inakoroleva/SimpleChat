@@ -5,12 +5,17 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import LoginPage from './LoginPage';
 import ErrorPage from './ErrorPage';
 import MainPage from './MainPage/MainPage';
 import AuthProvider, { useAuth } from '../providers/AuthProvider';
 import ServerProvider from '../providers/ServerProvider';
 import routes from '../routes';
+import '../i18n';
 
 const PrivateOutlet = () => {
   const { loggedIn } = useAuth();
@@ -25,9 +30,10 @@ const PublicOutlet = () => {
 };
 
 const AuthButton = () => {
+  const { t } = useTranslation();
   const { loggedIn, logOut } = useAuth();
 
-  return loggedIn ? <Button onClick={logOut}>Выйти</Button> : null;
+  return loggedIn ? <Button onClick={logOut}>{t('buttons.signOut')}</Button> : null;
 };
 
 const socket = io('/', { autoConnect: false });
@@ -53,7 +59,18 @@ const App = () => (
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
-        <div className="Toastify" />
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </BrowserRouter>
     </ServerProvider>
   </AuthProvider>
