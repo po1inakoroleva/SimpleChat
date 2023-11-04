@@ -24,6 +24,10 @@ const channelsSlice = createSlice({
       }
       channelsAdapter.removeOne(state, payload);
     },
+    renameChannel: (state, { payload }) => {
+      const channel = Object.values(state.entities).find((c) => c.id === payload.id);
+      channel.name = payload.name;
+    },
   },
   extraReducers: (builder) => {
     builder

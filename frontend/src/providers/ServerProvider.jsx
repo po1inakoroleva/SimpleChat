@@ -31,6 +31,7 @@ const ServerProvider = ({ socket, children }) => {
 
     const renameChannel = async (id, name) => {
       await socket.emitWithAck('renameChannel', { id, name });
+      dispatch(ChannnelsSlice.actions.renameChannel({ id, name }));
     };
 
     const getServerData = async () => {

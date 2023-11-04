@@ -51,6 +51,7 @@ export default {
       reloadBtn: 'Перезагрузить страницу',
       signOut: 'Выйти',
       cancelBtn: 'Отменить',
+      chatBtn: 'Hexlet Chat',
     },
     validation: {
       min3: 'Более 3 символов',
