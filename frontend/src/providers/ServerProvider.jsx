@@ -52,7 +52,7 @@ const ServerProvider = ({ socket, children }) => {
       connectSocket,
       disconnectSocket,
     });
-  }, [dispatch, socket, getAuthHeaders]);
+  }, [dispatch, socket]);
 
   return (
     <ServerContext.Provider value={context}>
