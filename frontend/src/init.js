@@ -3,6 +3,7 @@ import { initReactI18next, I18nextProvider } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { io } from 'socket.io-client';
 import { Provider } from 'react-redux';
+import LeoProfanity from 'leo-profanity';
 
 import ru from './locales/ru.js';
 import ServerProvider from './providers/ServerProvider';
@@ -26,6 +27,11 @@ const runApp = async () => {
         ru,
       },
     });
+
+  const profanityFilter = LeoProfanity;
+  profanityFilter.add(profanityFilter.getDictionary('en'));
+  profanityFilter.add(profanityFilter.getDictionary('fr'));
+  profanityFilter.add(profanityFilter.getDictionary('ru'));
 
   const socket = io('/', { autoConnect: false });
 

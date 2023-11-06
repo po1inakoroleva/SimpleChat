@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import LeoProfanity from 'leo-profanity';
 
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -50,6 +51,7 @@ const RemovableChannel = ({
 const Channels = ({ channels, currentChannel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const profanityFilter = LeoProfanity;
 
   const isCurrentChannel = (currentId) => {
     const { id } = currentChannel;
@@ -106,7 +108,7 @@ const Channels = ({ channels, currentChannel }) => {
             return (
               <li key={id} className="nav-item w-100">
                 <RemovableChannel
-                  name={name}
+                  name={profanityFilter.clean(name)}
                   id={id}
                   isCurrentChannel={isCurrentChannel}
                   handleSelect={handleSelect}
@@ -119,7 +121,7 @@ const Channels = ({ channels, currentChannel }) => {
           return (
             <li key={id} className="nav-item w-100">
               <NotRemovableChannel
-                name={name}
+                name={profanityFilter.clean(name)}
                 id={id}
                 isCurrentChannel={isCurrentChannel}
                 handleSelect={handleSelect}

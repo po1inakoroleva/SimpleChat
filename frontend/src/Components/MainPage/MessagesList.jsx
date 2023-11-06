@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { uniqueId } from 'lodash';
+import LeoProfanity from 'leo-profanity';
+
 import { useAuth } from '../../providers/AuthProvider';
 
 const scrollToMarker = (marker, behavior = 'auto') => {
@@ -36,6 +38,8 @@ const MessagesList = ({ messages, channelId }) => {
   const currentUserName = getUserName();
   const scrollRef = useRef();
 
+  const profanityFilter = LeoProfanity;
+
   useEffect(() => {
     scrollToMarker(scrollRef.current);
   }, [channelId]);
@@ -54,7 +58,7 @@ const MessagesList = ({ messages, channelId }) => {
           <Message
             key={uniqueId()}
             author={username}
-            body={body}
+            body={profanityFilter.clean(body)}
             color={color}
             justify={justify}
           />

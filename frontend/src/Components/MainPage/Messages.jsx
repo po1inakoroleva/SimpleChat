@@ -1,10 +1,14 @@
-import Col from 'react-bootstrap/Col';
 import { useTranslation } from 'react-i18next';
+import LeoProfanity from 'leo-profanity';
+
+import Col from 'react-bootstrap/Col';
+
 import MessagesForm from './MessagesForm';
 import MessagesList from './MessagesList';
 
 const Messages = ({ channel, messages }) => {
   const { t } = useTranslation();
+  const profanityFilter = LeoProfanity;
 
   return (
     <Col className="p-0 h-100">
@@ -12,7 +16,7 @@ const Messages = ({ channel, messages }) => {
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
             <b>
-              {`# ${channel.name}`}
+              {`# ${profanityFilter.clean(channel.name)}`}
             </b>
           </p>
           <span className="text-muted">{t('messages.counter.count', { count: messages.length })}</span>

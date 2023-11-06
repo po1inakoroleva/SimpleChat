@@ -97,7 +97,7 @@ const SignUpPage = () => {
                 </FloatingLabel>
                 <FloatingLabel controlId="passwordConfirmation" label={t('signUpPage.passwordConfirmation')} className="mb-3">
                   <Form.Control
-                    type="passwordConfirmation"
+                    type="password"
                     value={formik.values.passwordConfirmation}
                     placeholder="passwordConfirmation"
                     name="passwordConfirmation"
