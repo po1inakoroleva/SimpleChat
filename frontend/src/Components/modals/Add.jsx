@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +15,7 @@ import { useServer } from '../../providers/ServerProvider';
 
 const Add = ({ handleClose }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const channels = useSelector(channelsSelectors.selectAllChannelsNames);
   const { addChannel } = useServer();
 
@@ -45,6 +47,7 @@ const Add = ({ handleClose }) => {
         toast(t('modals.add.toast'));
       } catch (error) {
         toast.error(t('errors.errorConection'));
+        rollbar.error('Error adding channel', error);
       } finally {
         inputRef.current.focus();
       }

@@ -1,14 +1,19 @@
 import { useFormik } from 'formik';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import * as Yup from 'yup';
 import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+
 import { useServer } from '../../providers/ServerProvider';
 import { useAuth } from '../../providers/AuthProvider';
 
 const MessagesForm = ({ channelId }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const { sendMessage } = useServer();
   const { getUserName } = useAuth();
   const inputRef = useRef();
@@ -32,7 +37,8 @@ const MessagesForm = ({ channelId }) => {
         await sendMessage(message);
         formik.resetForm();
       } catch (error) {
-        console.log(error);
+        toast.error(t('errors.errorConection'));
+        rollbar.error('Error sending message', error);
       } finally {
         inputRef.current.focus();
       }

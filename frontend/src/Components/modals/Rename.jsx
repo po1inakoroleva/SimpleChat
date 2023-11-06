@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +16,7 @@ import { selectors as modalSelectors } from '../../slices/modalSlice';
 
 const Rename = ({ handleClose }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const { renameChannel } = useServer();
   const channels = useSelector(ChannelsSlice.channelsSelectors.selectAllChannelsNames);
   const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
@@ -46,6 +48,7 @@ const Rename = ({ handleClose }) => {
         toast(t('modals.rename.toast'));
       } catch (error) {
         toast.error(t('errors.errorConection'));
+        rollbar.error('Error renaming channel', error);
       } finally {
         inputRef.current.focus();
       }

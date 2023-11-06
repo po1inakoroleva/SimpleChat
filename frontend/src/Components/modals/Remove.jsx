@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -10,6 +11,7 @@ import { selectors as modalSelectors } from '../../slices/modalSlice';
 
 const Remove = ({ handleClose }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const { removeChannel } = useServer();
   const { channelId } = useSelector(modalSelectors.getModalContext);
 
@@ -20,6 +22,7 @@ const Remove = ({ handleClose }) => {
       toast(t('modals.remove.toast'));
     } catch (error) {
       toast.error(t('errors.errorConection'));
+      rollbar.error('Error removing channel', error);
     }
   };
 

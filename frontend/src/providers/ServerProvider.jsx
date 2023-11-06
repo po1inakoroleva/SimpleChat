@@ -1,7 +1,5 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import routes from '../routes.js';
 import * as MessagesSlice from '../slices/messagesSlice.js';
 import * as ChannnelsSlice from '../slices/channelsSlice.js';
 import { useAuth } from './AuthProvider.jsx';
@@ -34,11 +32,6 @@ const ServerProvider = ({ socket, children }) => {
       dispatch(ChannnelsSlice.actions.renameChannel({ id, name }));
     };
 
-    const getServerData = async () => {
-      const response = await axios.get(routes.data(), { headers: getAuthHeaders() });
-      return response;
-    };
-
     const connectSocket = () => {
       socket.connect();
       socket.on('newMessage', (message) => {
@@ -56,7 +49,6 @@ const ServerProvider = ({ socket, children }) => {
       addChannel,
       removeChannel,
       renameChannel,
-      getServerData,
       connectSocket,
       disconnectSocket,
     });

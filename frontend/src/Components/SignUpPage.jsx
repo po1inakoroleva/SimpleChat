@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -20,6 +21,7 @@ const SignUpPage = () => {
   const { signUp } = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -51,6 +53,7 @@ const SignUpPage = () => {
           return;
         }
         toast.error(t('errors.errorConection'));
+        rollbar.error('Error signing up', error);
       }
     },
   });
