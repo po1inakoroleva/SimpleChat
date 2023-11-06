@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { io } from 'socket.io-client';
 import { Provider } from 'react-redux';
 import LeoProfanity from 'leo-profanity';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 
 import ru from './locales/ru.js';
 import ServerProvider from './providers/ServerProvider';
@@ -28,6 +29,16 @@ const runApp = async () => {
       },
     });
 
+  const rollbarConfig = {
+    accessToken: '8417ff5890f941f5a0d8326628616453',
+    environment: 'testenv',
+  };
+
+  function TestError() {
+    const a = null;
+    return a.hello();
+  }
+
   const profanityFilter = LeoProfanity;
   profanityFilter.add(profanityFilter.getDictionary('en'));
   profanityFilter.add(profanityFilter.getDictionary('fr'));
@@ -36,15 +47,20 @@ const runApp = async () => {
   const socket = io('/', { autoConnect: false });
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <AuthProvider>
-          <ServerProvider socket={socket}>
-            <App />
-          </ServerProvider>
-        </AuthProvider>
-      </Provider>
-    </I18nextProvider>
+    <RollbarProvider config={rollbarConfig}>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <AuthProvider>
+            <ServerProvider socket={socket}>
+              <ErrorBoundary>
+                <TestError />
+              </ErrorBoundary>
+              <App />
+            </ServerProvider>
+          </AuthProvider>
+        </Provider>
+      </I18nextProvider>
+    </RollbarProvider>
   );
 };
 
