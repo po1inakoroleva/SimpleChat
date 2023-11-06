@@ -2,14 +2,12 @@ import { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import * as MessagesSlice from '../slices/messagesSlice.js';
 import * as ChannnelsSlice from '../slices/channelsSlice.js';
-import { useAuth } from './AuthProvider.jsx';
 
 const ServerContext = createContext();
 const useServer = () => useContext(ServerContext);
 
 const ServerProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
-  const { getAuthHeaders } = useAuth();
 
   const context = useMemo(() => {
     const sendMessage = async (message) => {
