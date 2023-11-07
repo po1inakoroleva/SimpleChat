@@ -54,9 +54,9 @@ export default {
       chatBtn: 'Hexlet Chat',
     },
     validation: {
-      min3: 'Более 3 символов',
-      min6: 'Более 6 символов',
-      max20: 'Менее 20 символов',
+      min3: 'От 3 до 20 символов',
+      min6: 'Не менее 6 символов',
+      max20: 'От 3 до 20 символов',
       required: 'Обязательное поле',
       correctSymbols: 'Только латинские буквы и цифры',
       passwordConfirmation: 'Пароли должны совпадать',
@@ -67,7 +67,7 @@ export default {
         title: 'Добавить канал',
         name: 'Имя канала',
         submitBtn: 'Отправить',
-        toast: 'Канал добавлен',
+        toast: 'Канал создан',
       },
       remove: {
         title: 'Удалить канал',
