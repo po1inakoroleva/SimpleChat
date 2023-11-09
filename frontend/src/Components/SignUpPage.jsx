@@ -32,7 +32,7 @@ const SignUpPage = () => {
       .required(t('validation.required'))
       .min(6, t('validation.min6'))
       .matches(/[a-zA-Z0-9]/, t('validation.correctSymbols')),
-    passwordConfirmation: Yup.string().required('Обязательное поле')
+    passwordConfirmation: Yup.string().required(t('validation.required')
       .oneOf([Yup.ref('password'), null], t('validation.passwordConfirmation')),
   });
 
