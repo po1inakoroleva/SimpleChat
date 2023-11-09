@@ -61,6 +61,7 @@ const MessagesForm = ({ channelId }) => {
           className="border-0 p-0 ps-2"
           onChange={formik.handleChange}
           ref={inputRef}
+          aria-label={t('messages.messagesForm.input')}
         />
         <button
           type="submit"

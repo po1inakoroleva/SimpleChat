@@ -26,6 +26,7 @@ export default {
       messagesForm: {
         placeholder: 'Введите сообщение...',
         submitBtn: 'Отправить',
+        input: 'Новое сообщение',
       },
     },
     channels: {
