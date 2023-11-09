@@ -11,7 +11,7 @@ export default {
     },
     signUpPage: {
       title: 'Регистрация',
-      username: 'Ваш ник',
+      username: 'Имя пользователя',
       password: 'Пароль',
       passwordConfirmation: 'Подтвердите пароль',
       submitBtn: 'Зарегистрироваться',
