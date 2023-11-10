@@ -8,25 +8,26 @@ const useServer = () => useContext(ServerContext);
 
 const ServerProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
+  const TIMEOUT = 4000;
 
   const context = useMemo(() => {
     const sendMessage = async (message) => {
-      await socket.emitWithAck('newMessage', message);
+      await socket.timeout(TIMEOUT).emitWithAck('newMessage', message);
     };
 
     const addChannel = async (name) => {
-      const { data } = await socket.emitWithAck('newChannel', { name });
+      const { data } = await socket.timeout(TIMEOUT).emitWithAck('newChannel', { name });
       dispatch(ChannnelsSlice.actions.addChannel(data));
       dispatch(ChannnelsSlice.actions.setCurrentChannel(data.id));
     };
 
     const removeChannel = async (id) => {
-      await socket.emitWithAck('removeChannel', { id });
+      await socket.timeout(TIMEOUT).emitWithAck('removeChannel', { id });
       dispatch(ChannnelsSlice.actions.removeChannel(id));
     };
 
     const renameChannel = async (id, name) => {
-      await socket.emitWithAck('renameChannel', { id, name });
+      await socket.timeout(TIMEOUT).emitWithAck('renameChannel', { id, name });
       dispatch(ChannnelsSlice.actions.renameChannel({ id, name }));
     };
 
