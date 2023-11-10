@@ -11,7 +11,7 @@ const ServerProvider = ({ socket, children }) => {
 
   const context = useMemo(() => {
     const sendMessage = async (message) => {
-      socket.emit('newMessage', message);
+      await socket.emitWithAck('newMessage', message);
     };
 
     const addChannel = async (name) => {
