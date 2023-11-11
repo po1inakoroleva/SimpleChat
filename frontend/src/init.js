@@ -39,7 +39,7 @@ const runApp = async () => {
   profanityFilter.add(profanityFilter.getDictionary('fr'));
   profanityFilter.add(profanityFilter.getDictionary('ru'));
 
-  const socket = io({ autoConnect: false });
+  const socket = io();
 
   return (
     <RollbarProvider config={rollbarConfig}>
