@@ -20,7 +20,7 @@ const runApp = async () => {
     .use(initReactI18next)
     .init({
       debug: true,
-      fallbackLng: 'en',
+      fallbackLng: 'ru',
       interpolation: {
         escapeValue: false,
       },
