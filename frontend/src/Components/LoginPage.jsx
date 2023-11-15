@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
@@ -16,6 +16,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 
 import { useAuth } from '../providers/AuthProvider';
+import routes from '../routes';
 
 const LoginPage = () => {
   const auth = useAuth();
@@ -51,6 +52,11 @@ const LoginPage = () => {
   });
 
   const target = useRef(null);
+
+  if (auth.loggedIn) {
+    return <Navigate to={routes.mainPage()} />;
+  }
+
   return (
     <Container fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">

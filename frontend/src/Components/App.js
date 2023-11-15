@@ -1,5 +1,5 @@
 import {
-  BrowserRouter, Routes, Route, Navigate, Outlet,
+  BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
@@ -8,23 +8,17 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useAuth } from '../providers/AuthProvider';
 import LoginPage from './LoginPage';
 import ErrorPage from './ErrorPage';
 import SignUpPage from './SignUpPage';
 import MainPage from './MainPage/MainPage';
-import { useAuth } from '../providers/AuthProvider';
 import routes from '../routes';
 
-const PrivateOutlet = () => {
+const PrivateOutlet = ({ children }) => {
   const { loggedIn } = useAuth();
 
-  return loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />;
-};
-
-const PublicOutlet = () => {
-  const { loggedIn } = useAuth();
-
-  return loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />;
+  return loggedIn ? children : <Navigate to={routes.loginPage()} />;
 };
 
 const AuthButton = () => {
@@ -47,15 +41,9 @@ const App = () => {
           </Container>
         </Navbar>
         <Routes>
-          <Route path={routes.mainPage()} element={<PrivateOutlet />}>
-            <Route path="" element={<MainPage />} />
-          </Route>
-          <Route path={routes.loginPage()} element={<PublicOutlet />}>
-            <Route path="" element={<LoginPage />} />
-          </Route>
-          <Route path={routes.signUpPage()} element={<PublicOutlet />}>
-            <Route path="" element={<SignUpPage />} />
-          </Route>
+          <Route path={routes.mainPage()} element={<PrivateOutlet><MainPage /></PrivateOutlet>} />
+          <Route path={routes.loginPage()} element={<LoginPage />} />
+          <Route path={routes.signUpPage()} element={<SignUpPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
