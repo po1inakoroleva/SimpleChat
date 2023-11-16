@@ -1,6 +1,3 @@
-deploy:
-	npm ci && cd ./frontend && npm ci && npm run build:deploy
-
 install:
 	npm ci
 
