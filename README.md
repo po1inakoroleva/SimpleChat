@@ -1,6 +1,9 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/po1inakoroleva/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/po1inakoroleva/frontend-project-12/actions)
 
+### Hexlet Chat
+Hexlet Chat is a messaging app with the ability to add and manage channels.  
+![Hexlet Chat](chat.png)
 ### Website
 [Hexlet Chat](https://hexlet-chat-7r27.onrender.com)
 
@@ -10,27 +13,6 @@ git clone git@github.com:po1inakoroleva/frontend-project-12.git
 ```
 ```
 make install
-```
-## Running the app locally
-
-```bash
-make start
-```
-
-The app will be available on _localhost:3000_
-
-## Deploy
-
-Build the app
-
-```bash
-npm run build
-```
-
-Run builded app
-
-```bash
-npm run start
 ```
 
 ## Built with
