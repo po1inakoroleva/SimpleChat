@@ -70,6 +70,7 @@ const Add = ({ handleClose }) => {
               onBlur={formik.handleBlur}
               value={formik.values.name}
               name="name"
+              id="name"
               className="mb-2"
             />
             <Form.Label className="visually-hidden">
