@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
-import { Navigate } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -17,10 +16,9 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 import { useAuth } from '../providers/AuthProvider';
-import routes from '../routes';
 
 const SignUpPage = () => {
-  const { signUp, loggedIn } = useAuth();
+  const { signUp } = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
   const rollbar = useRollbar();
@@ -61,10 +59,6 @@ const SignUpPage = () => {
   });
 
   const target = useRef(null);
-
-  if (loggedIn) {
-    return <Navigate to={routes.mainPage()} />;
-  }
 
   return (
     <Container fluid className="h-100">

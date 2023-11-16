@@ -21,6 +21,12 @@ const PrivateOutlet = ({ children }) => {
   return loggedIn ? children : <Navigate to={routes.loginPage()} />;
 };
 
+const PublicOutlet = ({ children }) => {
+  const { loggedIn } = useAuth();
+
+  return loggedIn ? <Navigate to={routes.mainPage()} /> : children;
+};
+
 const AuthButton = () => {
   const { t } = useTranslation();
   const { loggedIn, logOut } = useAuth();
@@ -42,8 +48,8 @@ const App = () => {
         </Navbar>
         <Routes>
           <Route path={routes.mainPage()} element={<PrivateOutlet><MainPage /></PrivateOutlet>} />
-          <Route path={routes.loginPage()} element={<LoginPage />} />
-          <Route path={routes.signUpPage()} element={<SignUpPage />} />
+          <Route path={routes.loginPage()} element={<PublicOutlet><LoginPage /></PublicOutlet>} />
+          <Route path={routes.signUpPage()} element={<PublicOutlet><SignUpPage /></PublicOutlet>} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
