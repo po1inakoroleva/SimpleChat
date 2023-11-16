@@ -1,14 +1,18 @@
-import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import routes from '../routes.js';
 
-const userId = JSON.parse(localStorage.getItem('userId'));
+const fetchInitialData = createAsyncThunk(
+  'fetchInitialData',
+  async (fetchServerData, { rejectWithValue }) => {
+    try {
+      const { data } = await fetchServerData();
+      return data;
+    } catch (error) {
+      if (error.isAxiosError) {
+        throw rejectWithValue(error.response.status);
+      }
+      throw (error);
+    }
+  },
+);
 
-export default createAsyncThunk('data/fetchInitialData', async () => {
-  const response = await axios.get(routes.data(), {
-    headers: {
-      Authorization: `Bearer ${userId.token}`,
-    },
-  });
-  return response.data;
-});
+export default fetchInitialData;

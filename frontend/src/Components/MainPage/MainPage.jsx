@@ -74,7 +74,7 @@ const MainPage = () => {
   const { getServerData, connectSocket, disconnectSocket } = useServer();
 
   useEffect(() => {
-    dispatch(fetchInitialData());
+    dispatch(fetchInitialData(getServerData));
     connectSocket();
 
     return () => disconnectSocket();

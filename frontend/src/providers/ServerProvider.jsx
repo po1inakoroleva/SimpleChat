@@ -1,13 +1,18 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
+
 import * as MessagesSlice from '../slices/messagesSlice.js';
 import * as ChannnelsSlice from '../slices/channelsSlice.js';
+import { useAuth } from './AuthProvider.jsx';
+import routes from '../routes.js';
 
 const ServerContext = createContext();
 const useServer = () => useContext(ServerContext);
 
 const ServerProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
+  const { getAuthHeader } = useAuth();
   const TIMEOUT = 4000;
 
   const context = useMemo(() => {
@@ -31,6 +36,13 @@ const ServerProvider = ({ socket, children }) => {
       dispatch(ChannnelsSlice.actions.renameChannel({ id, name }));
     };
 
+    const getServerData = async () => {
+      const route = routes.data();
+      const headers = getAuthHeader();
+      const response = await axios.get(route, { headers });
+      return response;
+    };
+
     const connectSocket = () => {
       socket.connect();
       socket.on('newMessage', (message) => {
@@ -48,10 +60,11 @@ const ServerProvider = ({ socket, children }) => {
       addChannel,
       removeChannel,
       renameChannel,
+      getServerData,
       connectSocket,
       disconnectSocket,
     });
-  }, [dispatch, socket]);
+  }, [dispatch, socket, getAuthHeader]);
 
   return (
     <ServerContext.Provider value={context}>
