@@ -19,7 +19,7 @@ const Rename = ({ handleClose }) => {
   const rollbar = useRollbar();
   const { renameChannel } = useServer();
   const channels = useSelector(ChannelsSlice.channelsSelectors.selectAllChannelsNames);
-  const { channelId } = useSelector(modalSelectors.getModalContext);
+  const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -38,7 +38,7 @@ const Rename = ({ handleClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: channelName,
     },
     validationSchema,
     onSubmit: async ({ name }) => {
@@ -63,7 +63,7 @@ const Rename = ({ handleClose }) => {
 
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group>
+          <Form.Group controlId="name" className="m-3">
             <Form.Control
               required
               ref={inputRef}
