@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
+import { useNavigate } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -16,12 +17,14 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 import { useAuth } from '../providers/AuthProvider';
+import routes from '../routes';
 
 const SignUpPage = () => {
   const { signUp } = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
   const rollbar = useRollbar();
+  const navigation = useNavigate();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -46,6 +49,7 @@ const SignUpPage = () => {
     onSubmit: async ({ username, password }) => {
       try {
         await signUp(username, password);
+        navigation(routes.mainPage());
       } catch (error) {
         formik.setSubmitting(false);
         if (error.isAxiosError && error.response.status === 409) {
