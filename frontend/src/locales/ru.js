@@ -74,7 +74,7 @@ export default {
         title: 'Удалить канал',
         body: 'Уверены?',
         submitBtn: 'Удалить',
-        toast: 'Канал удален',
+        toast: 'Канал удалён',
       },
       rename: {
         title: 'Переименовать канал',
