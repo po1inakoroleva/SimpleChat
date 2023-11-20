@@ -59,7 +59,6 @@ const Add = ({ handleClose }) => {
       <Modal.Header closeButton onHide={handleClose}>
         <Modal.Title>{t('modals.add.title')}</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
@@ -69,6 +68,7 @@ const Add = ({ handleClose }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
+              isInvalid={!!formik.errors.name && formik.touched.name}
               name="name"
               id="name"
               className="mb-2"
@@ -76,7 +76,7 @@ const Add = ({ handleClose }) => {
             <Form.Label className="visually-hidden">
               {t('modals.add.name')}
             </Form.Label>
-            <div className="invalid-feedback" />
+            {formik.errors.name ? <div className="invalid-feedback">{t(formik.errors.name)}</div> : null}
             <div className="d-flex justify-content-end">
               <Button
                 type="button"

@@ -60,7 +60,6 @@ const Rename = ({ handleClose }) => {
       <Modal.Header closeButton onHide={handleClose}>
         <Modal.Title>{t('modals.rename.title')}</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="name" className="m-3">
@@ -70,13 +69,14 @@ const Rename = ({ handleClose }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
+              isInvalid={!!formik.errors.name && formik.touched.name}
               name="name"
               className="mb-2"
             />
             <Form.Label className="visually-hidden">
               {t('modals.rename.name')}
             </Form.Label>
-            <div className="invalid-feedback" />
+            {formik.errors.name ? <div className="invalid-feedback">{t(formik.errors.name)}</div> : null}
             <div className="d-flex justify-content-end">
               <Button
                 type="button"
