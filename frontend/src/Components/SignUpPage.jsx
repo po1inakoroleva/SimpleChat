@@ -81,7 +81,7 @@ const SignUpPage = () => {
                     value={formik.values.username}
                     placeholder="username"
                     name="username"
-                    isInvalid={!!formik.errors.username && formik.errors.username}
+                    isInvalid={!!formik.errors.username && formik.touched.username}
                     onChange={formik.handleChange}
                     required
                     autoFocus
