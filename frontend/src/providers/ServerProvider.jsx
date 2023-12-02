@@ -21,7 +21,9 @@ const ServerProvider = ({ socket, children }) => {
     };
 
     const addChannel = async (name) => {
-      await socket.timeout(TIMEOUT).emit('newChannel', { name });
+      const { data } = await socket.timeout(TIMEOUT).emitWithAck('newChannel', { name });
+      dispatch(ChannnelsSlice.actions.addChannel(data));
+      dispatch(ChannnelsSlice.actions.setCurrentChannel(data.id));
     };
 
     const removeChannel = async (id) => {
@@ -44,9 +46,8 @@ const ServerProvider = ({ socket, children }) => {
       socket.on('newMessage', (message) => {
         dispatch(MessagesSlice.actions.addMessage(message));
       });
-      socket.on('newChannel', (data) => {
-        dispatch(ChannnelsSlice.actions.addChannel(data));
-        dispatch(ChannnelsSlice.actions.setCurrentChannel(data.id));
+      socket.on('newChannel', (channel) => {
+        dispatch(ChannnelsSlice.actions.addChannel(channel));
       });
       socket.on('removeChannel', ({ id }) => {
         dispatch(ChannnelsSlice.actions.removeChannel(id));
